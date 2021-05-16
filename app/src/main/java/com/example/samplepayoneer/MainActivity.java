@@ -104,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<List<ModelListOfPaymentOptions>> call, @NonNull Throwable t) {
-                Log.d(TAG, "onResponse: Network issue");
+                Log.d(TAG, "onResponse: Probably a Network issue:");
+                t.printStackTrace();
                 showError("Fail to get the data. This could be due to a network issue or an internal error. Please try again after sometime.");
 
             }
