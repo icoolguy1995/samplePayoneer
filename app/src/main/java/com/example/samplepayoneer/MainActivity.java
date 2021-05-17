@@ -76,11 +76,12 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<ModelListOfPaymentOptions>>() {
             @Override
             public void onResponse(@NonNull Call<List<ModelListOfPaymentOptions>> call, @NonNull Response<List<ModelListOfPaymentOptions>> response) {
+                mFrameLayout.setVisibility(View.GONE);
+
                 if (response.isSuccessful()) {
                     if(response.body() != null) {
                         paymentsOptionsLists.addAll(response.body());
                         adapter.notifyDataSetChanged();
-                        mFrameLayout.setVisibility(View.GONE);
                         rv.setVisibility(View.VISIBLE);
                     }
                 }else {
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<List<ModelListOfPaymentOptions>> call, @NonNull Throwable t) {
+                mFrameLayout.setVisibility(View.GONE);
                 Log.d(TAG, "onResponse: Probably a Network issue:");
                 t.printStackTrace();
                 showError("Fail to get the data. This could be due to a network issue or an internal error. Please try again after sometime.");
@@ -113,9 +115,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showError(String message){
-        Snackbar snackbar = Snackbar.make(constraintLayout, message, Snackbar.LENGTH_LONG).setAction("Refresh",
-                view -> Toast.makeText(MainActivity.this,"Refresh Clicked",Toast.LENGTH_SHORT).show());
-
+        Snackbar snackbar = Snackbar.make(constraintLayout, message, Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("Refresh", view -> snackbar.dismiss());
         snackbar.show();
     }
 }
